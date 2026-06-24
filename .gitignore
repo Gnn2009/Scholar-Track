@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+
+.vscode/
+.idea/
+
+venv/
+.venv/
+env/
+
+data/*.json
+
+ROADMAP.txt
+
+.DS_Store
+Thumbs.db
