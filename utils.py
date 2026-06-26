@@ -1,22 +1,29 @@
 import os
 
-mainmenu = ["Brose data","Manage data","Settings","Exit"]
+mainMenu = ["Browse data","Manage data","Settings","Exit"]
+browseMenu = ["Browse by Grade", "Browse by Group", "Serch Student","Exit"]
+settingsMenu = ["Config Setts", "Exit"]
+manageMenu = ["Edit","Create","Exit"]
+editMenu = ["Manage Grade", "Manage Group", "Edit Student","Exit"]
+creatmenu = ["Create Grade", "Create Group", "Regist Student", "Exit"]
 
-def mainMenuPrint():
+
+
+def menuPrint(message, content):
     separator("=")
-    print("WELCOME TO THE STUDENTS REGIST PROGRAM")
+    print(message)
     separator("=")
-    for index, option in enumerate(mainmenu, start=1):
+    for index, option in enumerate(content, start=1):
         print(f"{index}: {option}")
 
-def navegationIntputMenu(prevfunction,max):
+def navegationIntputMenu(message, content, max):
     while True:
         clear()
-        prevfunction()
+        menuPrint(message, content)
         separator("-")
         try:
             data = int(input("Choose an option: "))
-            if 1 < data < max:
+            if 1 <= data <= max:
                 return data
             input(f"Please enter a value between 1 and {max}\nPress Enter...")
         except ValueError:
