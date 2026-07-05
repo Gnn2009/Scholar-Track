@@ -7,6 +7,7 @@ settingsMenu = ["Config Setts", "Exit"]
 manageMenu = ["Edit","Create","Exit"]
 editMenu = ["Manage Grade", "Manage Group", "Edit Student","Exit"]
 creatmenu = ["Create Grade", "Create Group", "Regist Student", "Exit"]
+setcConfigsMenu =["Default", "Create new ones"]
 
 def navegationIntputMenu(message, content, max):
     while True:
@@ -26,15 +27,29 @@ def navegationIntputMenu(message, content, max):
             input("Please enter an numeric value\nPress Enter..")
             continue
 
-def neutralMessageInput(message, dataQ, clearQ):
+def neutralMessageInput(message,clearQ,type):
     if clearQ == True:
         clear()
     separator("-")
-    if dataQ == True:
+    if type == "str":
         data = input(message)
+        while not data.strip():
+            data = input(f"Please entar a value\n{message}")
         return data
+    elif type == "int":
+        while True:
+            data = input(message)
+            try:
+                intaData = int(data)
+                return intaData
+            except(ValueError):
+                clear()
+                print("Enter a numeric value")
+    elif type == "none":
+        print(message)
     else:
         print(message)
+
 def separator(symbol):
     print(symbol*50)
 def clear():
