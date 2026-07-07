@@ -1,8 +1,6 @@
-import config
-import storage
 from utils import separator, clear, navegationIntputMenu, neutralMessageInput, configs, storage
-from utils import mainMenu, browseMenu, manageMenu, editMenu, creatmenu, settingsMenu, setcConfigsMenu, createSetting
-from storage import createFile, readFile, writeInFile
+from utils import mainMenu, browseMenu, manageMenu, editMenu, creatmenu, settingsMenu, setConfigsMenu
+from storage import createFile, readFile, writeInFile, createSetting, createGroup
 from config import DEF_CONFIG
 
 def main():
@@ -10,24 +8,24 @@ def main():
         createFile(storage,{})
         createFile(configs,{})
         storageData  = readFile(storage)
-        option = navegationIntputMenu("WELCOME TO THE STUDENTS REGIST PROGRAM",mainMenu,len(mainMenu))
+        option = navegationIntputMenu("WELCOME TO THE STUDENTS REGIST PROGRAM",mainMenu,)
         match option:
             case 1:
                 while True:
                     if not storageData:
                         input("There is no data registred\nPress Enter...")
                         break
-                    option = navegationIntputMenu("BROWSE MENU", browseMenu, len(browseMenu))
+                    option = navegationIntputMenu("BROWSE MENU", browseMenu,)
                     match option:
                         case 4:
                             break
             case 2:
                 while True:
-                    option  = navegationIntputMenu("MANAGE MENU", manageMenu ,len(manageMenu))
+                    option  = navegationIntputMenu("MANAGE MENU", manageMenu)
                     if option == 1:
-                        option = navegationIntputMenu("EDIT MENU", editMenu, len(editMenu))
+                        option = navegationIntputMenu("EDIT MENU", editMenu)
                     if option == 2:
-                        option = navegationIntputMenu("CREATE MENU", creatmenu, len(creatmenu))
+                        option = navegationIntputMenu("CREATE MENU", creatmenu,)
                         match option:
                             case 1:
                                 nameGarde = neutralMessageInput("Enter the Grade name:\n", True, "str")
@@ -38,39 +36,16 @@ def main():
                             case 2:
                                 while True:
                                     if storageData == {}:
-                                        input("There are no grades where create an group\nPress Enter...")
+                                        createGroup(storageData, False)
                                         break
-                                    configData = readFile(configs)
-                                    if configData == {}:
-                                        option = navegationIntputMenu("SET CONFIG", setcConfigsMenu, len(setcConfigsMenu))
-                                        print(option)
-                                        if option == 2:
-                                            configName =createSetting()
-                                        else:
-                                            configData["default"] = DEF_CONFIG
-                                            writeInFile(configs, configData)
-                                            configName = "default"
-                                            break
-                                        for grade in storageData:
-                                            neutralMessageInput(grade, False, "none")
-                                        posibleGrade = neutralMessageInput("Where should the group be created?", False, "str")
-                                        if posibleGrade in storageData:
-                                            setgrade = posibleGrade
-                                            nameGroup = neutralMessageInput("Enter the Group name:\n", True,"str")
-                                            basicGroup = {
-                                                "config": configName
-                                            }
-                                            storageData[setgrade][nameGroup] = basicGroup
-                                            writeInFile(storage, storageData)
-                                            break
-                                        else:
-                                            input("That grade doesnt exist")
-                                            continue
+                                    else:
+                                        createGroup(storageData, True)
+                                        break
                     else:
                         break
             case 3:
                 while True:
-                    option = navegationIntputMenu("SETTING MENU", settingsMenu,len(settingsMenu))
+                    option = navegationIntputMenu("SETTING MENU", settingsMenu)
             case 4:
                 clear()
                 separator("=")

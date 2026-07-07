@@ -1,4 +1,3 @@
-from storage import readFile, writeInFile
 import os
 storage = "data/storage.json"
 configs = "data/config.json"
@@ -9,9 +8,11 @@ settingsMenu = ["Config Setts", "Exit"]
 manageMenu = ["Edit","Create","Exit"]
 editMenu = ["Manage Grade", "Manage Group", "Edit Student","Exit"]
 creatmenu = ["Create Grade", "Create Group", "Regist Student", "Exit"]
-setcConfigsMenu =["Default", "Create new ones"]
+setConfigsMenu =["Default", "Create new ones"]
+selectConfigMeun = ["Create", "Select", "Default"]
 
-def navegationIntputMenu(message, content, max):
+
+def navegationIntputMenu(message, content):
     while True:
         clear()
         separator("=")
@@ -22,9 +23,9 @@ def navegationIntputMenu(message, content, max):
         separator("-")
         try:
             data = int(input("Choose an option: "))
-            if 1 <= data <= max:
+            if 1 <= data <= len(content):
                 return data
-            input(f"Please enter a value between 1 and {max}\nPress Enter...")
+            input(f"Please enter a value between 1 and {len(content)}\nPress Enter...")
         except ValueError:
             input("Please enter an numeric value\nPress Enter..")
             continue
@@ -51,29 +52,6 @@ def neutralMessageInput(message,clearQ,type):
         print(message)
     else:
         print(message)
-
-def createSetting():
-    configData = readFile(storage)
-    configName = neutralMessageInput("Enter the config sett name:\n", True, "str")
-    max_note = neutralMessageInput("Enter the max note possible:\n", True, "int")
-    min_note = neutralMessageInput("Enter the min note possible:\n", True, "int")
-    notes_per_subject = neutralMessageInput("Enter how many notes will be per subject:\n", True, "int")
-    subjects =[]
-    while True:
-        subjectName = input("Enter the name of one subject\nEnter 'f' to finish:\n").lower()
-        if subjectName == "f":
-            break
-        else:
-            subjects.append(subjectName)
-            continue
-    configData[configName] ={
-        "max_note": max_note,
-        "min_note": min_note,
-        "notes_per_subject": notes_per_subject,
-        "subjects": subjects
-    }
-    writeInFile(storage, configData)
-    return configName
 
 def separator(symbol):
     print(symbol*50)
