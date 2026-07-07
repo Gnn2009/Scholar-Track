@@ -1,5 +1,7 @@
-import json
+from storage import readFile, writeInFile
 import os
+storage = "data/storage.json"
+configs = "data/config.json"
 
 mainMenu = ["Browse data","Manage data","Settings","Exit"]
 browseMenu = ["Browse by Grade", "Browse by Group", "Serch Student","Exit"]
@@ -49,6 +51,29 @@ def neutralMessageInput(message,clearQ,type):
         print(message)
     else:
         print(message)
+
+def createSetting():
+    configData = readFile(storage)
+    configName = neutralMessageInput("Enter the config sett name:\n", True, "str")
+    max_note = neutralMessageInput("Enter the max note possible:\n", True, "int")
+    min_note = neutralMessageInput("Enter the min note possible:\n", True, "int")
+    notes_per_subject = neutralMessageInput("Enter how many notes will be per subject:\n", True, "int")
+    subjects =[]
+    while True:
+        subjectName = input("Enter the name of one subject\nEnter 'f' to finish:\n").lower()
+        if subjectName == "f":
+            break
+        else:
+            subjects.append(subjectName)
+            continue
+    configData[configName] ={
+        "max_note": max_note,
+        "min_note": min_note,
+        "notes_per_subject": notes_per_subject,
+        "subjects": subjects
+    }
+    writeInFile(storage, configData)
+    return configName
 
 def separator(symbol):
     print(symbol*50)
