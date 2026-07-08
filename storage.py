@@ -1,12 +1,13 @@
 import json,os
 import config
-from utils import neutralMessageInput,configs, storage, navegationIntputMenu
+from utils import clear, neutralMessageInput,configs, storage, navegationIntputMenu, verifyExistentData
 from utils import selectConfigMeun
 
 def createFile(direction, content):
     if not os.path.exists(direction):
         with open(direction, "w") as file:
             json.dump(content, file, indent=4)
+            clear()
             input("A new storage file had been created...\nPress Enter...")
 def readFile(direction):
     with open(direction, "r") as file:
@@ -81,3 +82,28 @@ def createSetting():
     }
     writeInFile(configs, configData)
     return configName
+
+def createStudent():
+    storageData = readFile(storage)
+    configsData = readFile(storage)
+    for grade in storageData:
+        neutralMessageInput(grade, False, "none")
+    selectedGrade = verifyExistentData(storageData)
+    for group in storageData[selectedGrade]:
+        neutralMessageInput(group, False, "none")
+    selectedGroup = verifyExistentData(storageData[selectedGrade])
+    selectedConfig = configsData[storageData[selectedGrade][selectedGroup]["config"]]
+    while True:
+        notes = {
+        }
+        name = neutralMessageInput("Enter the students name:\n",True, "str")
+        for subject in enumerate(configsData[selectedConfig]["subjects"]):
+            for j in selectedConfig["notes_per_subject"]:
+                note = neutralMessageInput(f"Enter the {subject} #{j} note:\n", True, "int")
+                notes[subject].append(note)
+        if neutralMessageInput("Press 'Q' to quit\nPress enter to regist another one", True, "str") == "f":
+                break
+        storageData[selectedGrade][selectedGroup] = {
+            "name": name,
+            "notes": notes
+        }

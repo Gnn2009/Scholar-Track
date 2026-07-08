@@ -1,6 +1,6 @@
 from utils import separator, clear, navegationIntputMenu, neutralMessageInput, configs, storage
-from utils import mainMenu, browseMenu, manageMenu, editMenu, creatmenu, settingsMenu, setConfigsMenu
-from storage import createFile, readFile, writeInFile, createSetting, createGroup
+from utils import mainMenu, browseMenu, manageMenu, editMenu, creatmenu, settingsMenu
+from storage import createFile, readFile, writeInFile, createGroup, createStudent
 from config import DEF_CONFIG
 
 def main():
@@ -41,6 +41,12 @@ def main():
                                     else:
                                         createGroup(storageData, True)
                                         break
+                            case 3:
+                                if any(isinstance(contenido, dict) and contenido for contenido in storageData.values()):
+                                    createStudent()
+                                else:
+                                    input("There are no groups where the students can be registred\nPress enter...")
+                                    break
                     else:
                         break
             case 3:

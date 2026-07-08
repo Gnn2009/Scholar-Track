@@ -57,3 +57,9 @@ def separator(symbol):
     print(symbol*50)
 def clear():
     os.system("clear")
+
+def verifyExistentData(file):
+    while True:
+        var = neutralMessageInput("Chose one grade:\n", False, "str")
+        if var in file:
+            return var
