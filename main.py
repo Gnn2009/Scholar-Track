@@ -7,7 +7,8 @@ def main():
     while True:
         createFile(storage,{})
         createFile(configs,{})
-        storageData  = readFile(storage)
+        storageData  = readFile(storage)      
+        writeInFile(configs,DEF_CONFIG)
         option = navegationIntputMenu("WELCOME TO THE STUDENTS REGIST PROGRAM",mainMenu,)
         match option:
             case 1:

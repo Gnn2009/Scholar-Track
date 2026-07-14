@@ -1,4 +1,4 @@
-import json,os
+import json,os, re
 import config
 from utils import clear, neutralMessageInput,configs, storage, navegationIntputMenu, verifyExistentData
 from utils import selectConfigMeun
@@ -15,11 +15,19 @@ def readFile(direction):
     return data
 def writeInFile(direction, data):
     with open(direction, "w", encoding="UTF-8") as file:
-        json.dump(data,file, ensure_ascii=False, indent=4)
+        json_text = json.dumps(data, ensure_ascii=False, indent=4)
+        clean_json = re.sub(
+            r'\[\s*(.*?)\s*\]', 
+            lambda match: '[' + re.sub(r'\s+', ' ', match.group(1)).strip() + ']', 
+            json_text, 
+            flags=re.DOTALL
+        )
+        
+        file.write(clean_json)
 
 def createGroup(storageData, existSettings):
     configData = readFile(configs)
-    confname ="DEF"
+    confname ="DEF_CONFIG"
     for grade in storageData:
         neutralMessageInput(grade, True, "none")
     while True:
@@ -85,7 +93,7 @@ def createSetting():
 
 def createStudent():
     storageData = readFile(storage)
-    configsData = readFile(storage)
+    configsData = readFile(configs)
     for grade in storageData:
         neutralMessageInput(grade, False, "none")
     selectedGrade = verifyExistentData(storageData)
@@ -94,16 +102,17 @@ def createStudent():
     selectedGroup = verifyExistentData(storageData[selectedGrade])
     selectedConfig = configsData[storageData[selectedGrade][selectedGroup]["config"]]
     while True:
-        notes = {
-        }
+        notes = {}
         name = neutralMessageInput("Enter the students name:\n",True, "str")
-        for subject in enumerate(configsData[selectedConfig]["subjects"]):
-            for j in selectedConfig["notes_per_subject"]:
+        for subject in selectedConfig["subjects"]:
+            notes[subject]=[]
+            for j in range(1,selectedConfig["notes_per_subject"] + 1):
                 note = neutralMessageInput(f"Enter the {subject} #{j} note:\n", True, "int")
                 notes[subject].append(note)
-        if neutralMessageInput("Press 'Q' to quit\nPress enter to regist another one", True, "str") == "f":
-                break
         storageData[selectedGrade][selectedGroup] = {
             "name": name,
             "notes": notes
         }
+        writeInFile(storage, storageData)
+        if neutralMessageInput("Press 'q' to quit\nPress enter to regist another one", True, "str") == "q":
+            break
