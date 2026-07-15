@@ -2,7 +2,7 @@ import os
 storage = "data/storage.json"
 configs = "data/config.json"
 
-mainMenu = ["Manage data","Exit"]
+mainMenu = ["Manage data","Reports","Exit"]
 creatmenu = ["Create Grade", "Create Group", "Regist Student", "Exit"]
 setConfigsMenu =["Default", "Create new ones"]
 selectConfigMeun = ["Create", "Select", "Default"]

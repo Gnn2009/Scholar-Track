@@ -111,15 +111,18 @@ def createStudent():
     selectedConfig = configsData[storageData[selectedGrade][selectedGroup]["config"]]
     while True:
         notes = {}
+        averages = {}
         name = neutralMessageInput("Enter the students name:\n",True, "str")
         for subject in selectedConfig["subjects"]:
             notes[subject]=[]
             for j in range(1,selectedConfig["notes_per_subject"] + 1):
                 note = neutralMessageInput(f"Enter the {subject} #{j} note:\n", True, "int")
                 notes[subject].append(note)
-        storageData[selectedGrade][selectedGroup] = {
-            "name": name,
-            "notes": notes
+            average = round(sum(notes[subject])/len(configsData[storageData[selectedGrade][selectedGroup]["config"]]["subjects"]), 1)
+            averages [subject] = average
+        storageData[selectedGrade][selectedGroup][name] = {
+            "notes": notes,
+            "averages": averages
         }
         writeInFile(storage, storageData)
         if neutralMessageInput("Press 'q' to quit\nPress enter to regist another one", True, "str") == "q":

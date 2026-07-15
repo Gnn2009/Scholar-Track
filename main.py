@@ -41,7 +41,61 @@ def main():
             case 2:
                 clear()
                 separator("=")
-                print("SEE YOU LATTER")                
+                print("GRADES")
+                separator("=")
+                storageData = readFile(storage)
+                for grade in storageData:
+                    print(grade)
+                while True:
+                    option = neutralMessageInput("Choose one grade:\n", False, "str")
+                    if option in storageData:
+                        selectedGrade = option
+                        break
+                for group in storageData[selectedGrade]:
+                    print(group)
+                while True:
+                    option = neutralMessageInput("Choose one group:\n", False, "str")
+                    if option in storageData[selectedGrade]:
+                        selectedGroup = option
+                        break
+                bests = {}
+                students_in_group = storageData[selectedGrade][selectedGroup]  
+                for student, data in students_in_group.items():
+                    # Filtramos para procesar solo a los alumnos (diccionarios con la clave 'averages')
+                    if isinstance(data, dict) and "averages" in data:
+                        for signature, average in data["averages"].items():
+                            if signature not in bests:
+                                bests[signature] = {
+                                    "students": [student],
+                                    "average": average
+                                }
+                            elif average > bests[signature]["average"]: 
+                                bests[signature] = {
+                                    "students": [student],
+                                    "average": average
+                                }
+                            elif average == bests[signature]["average"]: 
+                                if student not in bests[signature]["students"]:
+                                    bests[signature]["students"].append(student)
+                clear()
+                separator("=")
+                print(f"MEJORES PROMEDIOS - {selectedGrade} {selectedGroup}")
+                separator("=")
+                if not bests:
+                    print("No hay calificaciones registradas en este grupo.")
+                else:
+                    for signature, info in bests.items():
+                        students_str = ", ".join(info["students"])
+                        # Redondeamos al mostrar para que los decimales largos no rompan la vista
+                        print(f"📚 {signature}: {students_str} con {round(info['average'], 2)}")
+                
+                separator("=")
+                # 🔥 LA CLAVE: Esta pausa evita que el código vuelva al menú principal de golpe
+                input("\nPresiona Enter para volver al menú principal...")
+            case 3:
+                clear()
+                separator("=")
+                print("SEE YOU LATTER")
                 separator("=")
                 break
 
