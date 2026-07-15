@@ -1,5 +1,5 @@
 from utils import separator, clear, navegationIntputMenu, neutralMessageInput, configs, storage
-from utils import mainMenu, browseMenu, manageMenu, editMenu, creatmenu, settingsMenu
+from utils import mainMenu, creatmenu
 from storage import createFile, readFile, writeInFile, createGroup, createStudent
 from config import DEF_CONFIG
 
@@ -13,19 +13,7 @@ def main():
         match option:
             case 1:
                 while True:
-                    if not storageData:
-                        input("There is no data registred\nPress Enter...")
-                        break
-                    option = navegationIntputMenu("BROWSE MENU", browseMenu,)
-                    match option:
-                        case 4:
-                            break
-            case 2:
-                while True:
-                    option  = navegationIntputMenu("MANAGE MENU", manageMenu)
                     if option == 1:
-                        option = navegationIntputMenu("EDIT MENU", editMenu)
-                    if option == 2:
                         option = navegationIntputMenu("CREATE MENU", creatmenu,)
                         match option:
                             case 1:
@@ -50,10 +38,7 @@ def main():
                                     break
                     else:
                         break
-            case 3:
-                while True:
-                    option = navegationIntputMenu("SETTING MENU", settingsMenu)
-            case 4:
+            case 2:
                 clear()
                 separator("=")
                 print("SEE YOU LATTER")                

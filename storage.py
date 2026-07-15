@@ -1,7 +1,6 @@
 import json,os, re
-import config
 from utils import clear, neutralMessageInput,configs, storage, navegationIntputMenu, verifyExistentData
-from utils import selectConfigMeun
+from utils import selectConfigMeun, clear, separator
 
 def createFile(direction, content):
     if not os.path.exists(direction):
@@ -27,6 +26,12 @@ def writeInFile(direction, data):
 
 def createGroup(storageData, existSettings):
     configData = readFile(configs)
+    storageData = readFile(storage)
+    if not storageData:
+        clear()
+        separator("-")
+        input("There are no grades to create a group\nPress enter...")
+        return
     confname ="DEF_CONFIG"
     for grade in storageData:
         neutralMessageInput(grade, True, "none")
@@ -45,14 +50,17 @@ def createGroup(storageData, existSettings):
                 case 1:
                     confname = createSetting()
                 case 2:
-                    for name in configData:
-                        neutralMessageInput(name,False, "none")
+                    clear()
+                    separator("-")
                     while True:
-                        option = neutralMessageInput("OPTIONS", False, "str")
+                        for name in configData:
+                            neutralMessageInput(name,False, "none")
+                        option = neutralMessageInput("TYPE AN OPTION:\n", False, "str")
                         if option in configData:
                             confname = option
                             break
                         else:
+                            clear()
                             continue
     else:
         confname = createSetting()
